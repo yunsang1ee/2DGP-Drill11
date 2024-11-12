@@ -153,17 +153,22 @@ class Boy:
     def draw(self):
         self.state_machine.draw()
         self.font.draw(self.x-10, self.y + 50, f'{self.ball_count:02d}', (255, 255, 0))
+        draw_rectangle(*self.get_bb())
 
     def fire_ball(self):
         if self.ball_count > 0:
             self.ball_count -= 1
             ball = Ball(self.x, self.y, self.face_dir*10)
             game_world.add_object(ball)
+            game_world.add_collision_pair('ball:zombie', ball, None)
 
     def get_bb(self):
         # fill here
+        return self.x - 15, self.y - 50, self.x + 15, self.y + 50
         pass
 
     def handle_collision(self, group, other):
         # fill here
+        if group == 'boy:ball':
+            self.ball_count += 1
         pass
